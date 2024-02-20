@@ -12,21 +12,21 @@
   </head>
   <body>
     <div class="container">
-        <h1>Hello Jennifer</h1>
-        <div class="card mb-3" style="max-width: 540px;">
+        <h1>Global News</h1>
+        <!-- <div class="card mb-3" style="max-width: 540px;">
             <div class="row g-0">
               <div class="col-md-4">
-                <img src="..." class="img-fluid rounded-start" alt="...">
+                <img id="img" class="img-fluid rounded-start" alt="...">
               </div>
               <div class="col-md-8">
                 <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                  <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                  <h5 class="card-title" id="title">Card title</h5>
+                  <p class="card-text" id="desc">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  <p class="card-text" id="publishedAt"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
     </div>
 
     <!-- Optional JavaScript; choose one of the two! -->
@@ -36,8 +36,33 @@
     
     <script>
         fetch("https://newsapi.org/v2/top-headlines?country=us&apiKey=ea88409fcf804b69833db0b2442c5998")
-        .then(response => response.json())
-        .then(data => {console.log(data)})
+        .then(res => res.json())
+        .then(data => {
+           for(var i = 0; i < data.articles.length; i++){
+               var cardDiv = document.createElement("div")
+               cardDiv.setAttribute("class", "card mb-3")
+               cardDiv.setAttribute("class", "max-width: 540px;")
+               cardDiv.innerHTML = `<div class="row row-cols-1 row-cols-md-3 g-4">
+               <div class="col" >
+                    <div class="card mb-3" style="max-width: 50rem;">
+                        <div class="row g-0">
+                            <img src="${data.articles[i]["urlToImage"]}" class="card-img-top" alt="...">
+                            <div class="col-md-8">  
+                                <div class="card-body">
+                                <h5 class="card-title">${data.articles[i].title}</h5>
+                                <p class="card-text">${data.articles[i].description}</p>
+                                <div class="card-footer">
+                                <p class="card-text"><small class="text-body-secondary">${data.articles[i].publishedAt}</small></p>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           `
+            document.body.appendChild(cardDiv)
+           }}).catch(err => console.log(err));
     </script>
   </body>
 </html>
